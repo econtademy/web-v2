@@ -618,7 +618,28 @@
                         const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
                         const json = await res.json();
                         
-                        if(json.status === 'success') {
+if(json.status === 'success') {
+    // 1. EFECTO DE CELEBRACIÓN
+    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    
+    // 2. LIMPIEZA DE DATOS (ESTO ES LO NUEVO)
+    e.target.reset(); // <--- ESTO BORRA LOS CAMPOS DEL FORMULARIO (Nombre, Email, etc.)
+    app.cart = []; 
+    app.activeCoupon = null; 
+    app.saveCart();
+    
+    // 3. LIMPIEZA VISUAL DEL CARRITO
+    document.getElementById('cart-subtotal').innerText = "$0.00";
+    document.getElementById('cart-total').innerText = "$0.00";
+    document.getElementById('cart-badge').classList.add('scale-0'); // Ocultar contador rojo
+    document.getElementById('discount-row').classList.add('hidden'); // Ocultar descuento
+    
+    // 4. CERRAR MODAL Y AVISAR
+    document.getElementById('checkout-modal').classList.add('hidden');
+    
+    // Mensaje con el ID para el usuario
+    alert(`¡PEDIDO EXITOSO!\n\nID Pedido: ${json.idPedido}\n\nIMPORTANTE: Copia este ID, es tu contraseña para entrar al Aula Virtual.`);
+}
                             // EFECTO DE CELEBRACIÓN
                             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                             
@@ -743,4 +764,5 @@
         function toggleMobile(){ document.getElementById('mobile-menu').classList.toggle('hidden'); }
     </script>
 </body>
+
 </html>
