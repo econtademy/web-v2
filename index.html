@@ -640,12 +640,6 @@ if(json.status === 'success') {
     // Mensaje con el ID para el usuario
     alert(`¡PEDIDO EXITOSO!\n\nID Pedido: ${json.idPedido}\n\nIMPORTANTE: Copia este ID, es tu contraseña para entrar al Aula Virtual.`);
 }
-                            // EFECTO DE CELEBRACIÓN
-                            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                            
-                            app.cart = []; app.activeCoupon = null; app.saveCart();
-                            document.getElementById('checkout-modal').classList.add('hidden');
-                            alert(`¡PEDIDO EXITOSO!\n\nID Pedido: ${json.idPedido}\nGuarda este ID para entrar al Aula Virtual.`);
                         } else {
                             throw new Error("Error en backend");
                         }
@@ -766,3 +760,4 @@ if(json.status === 'success') {
 </body>
 
 </html>
+
