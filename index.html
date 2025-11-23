@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eContademy | Transforma tu Futuro</title>
+    
+    <meta name="description" content="Plataforma líder en educación online y recursos para emprendedores. Cursos certificados, herramientas y consultoría.">
+    <meta name="keywords" content="cursos online, contabilidad, programación, excel, negocios, consultoría">
+    <meta name="author" content="eContademy">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="eContademy | Educación Real">
+    <meta property="og:description" content="Aprende habilidades reales con proyectos prácticos.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                extend: {
+                    colors: {
+                        brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 900: '#1e3a8a' },
+                        dark: '#0f172a',
+                        surface: '#f8fafc'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                        'scale-up': 'scaleUp 0.3s ease-out forwards'
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        slideUp: { '0%': { opacity: '0', transform: 'translateY(30px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        scaleUp: { '0%': { transform: 'scale(0.9)', opacity: '0' }, '100%': { transform: 'scale(1)', opacity: '1' } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ESTILOS CRÍTICOS & GLASSMORPHISM */
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.3); }
+        
+        /* Slider */
+        .slider-wrapper { position: relative; height: 85vh; min-height: 600px; overflow: hidden; background: #000; }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease-in-out; display: flex; align-items: center; justify-content: center; }
+        .slide.active { opacity: 1; z-index: 10; }
+        .slide-overlay { background: linear-gradient(to top, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.3)); position: absolute; inset: 0; z-index: 2; }
+        .slide-content { position: relative; z-index: 10; padding: 2rem; max-width: 1200px; width: 100%; }
+
+        /* Loader & Skeleton */
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #3b82f6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .skeleton { background: linear-gradient(90deg, #e2e8f0 25%, #cbd5e1 50%, #e2e8f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        
+        /* Video Container */
+        .iframe-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000; }
+        .iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    </style>
+</head>
+<body class="bg-surface text-slate-800 flex flex-col min-h-screen">
+
+    <header class="fixed w-full z-50 transition-all duration-300 glass" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="#" onclick="app.router('home')" class="flex items-center gap-2 group">
+                    <div class="bg-brand-600 text-white p-2 rounded-xl shadow-lg group-hover:scale-105 transition transform duration-300">
+                        <i data-lucide="zap" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold tracking-tight text-slate-900 leading-none">eConta<span class="text-brand-600">demy</span></span>
+                        <span class="text-xs text-slate-400 block tracking-widest uppercase font-semibold">Academy</span>
+                    </div>
+                </a>
+
+                <nav class="hidden lg:flex items-center gap-8 font-medium text-slate-600">
+                    <a href="#" onclick="app.router('home')" class="hover:text-brand-600 transition py-2 nav-link">Inicio</a>
+                    <a href="#" onclick="app.router('store')" class="hover:text-brand-600 transition py-2 nav-link">Cursos & Tienda</a>
+                    <a href="#" onclick="app.router('services')" class="hover:text-brand-600 transition py-2 nav-link">Servicios</a>
+                    <a href="#" onclick="app.router('blog')" class="hover:text-brand-600 transition py-2 nav-link">Blog</a>
+                    <a href="#" onclick="app.router('contact')" class="hover:text-brand-600 transition py-2 nav-link">Contacto</a>
+                </nav>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="app.toggleCart()" class="relative p-2.5 hover:bg-slate-100 rounded-full transition group">
+                        <i data-lucide="shopping-bag" class="w-6 h-6 text-slate-700 group-hover:text-brand-600"></i>
+                        <span id="cart-badge" class="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white transform scale-0 transition-transform">0</span>
+                    </button>
+                    
+                    <button onclick="app.router('lms')" class="hidden md:flex bg-slate-900 text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-slate-800 transition shadow-lg items-center gap-2 hover:-translate-y-0.5 transform">
+                        <i data-lucide="user-circle" class="w-4 h-4"></i> Aula Virtual
+                    </button>
+
+                    <button class="lg:hidden text-slate-700 p-2" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        <i data-lucide="menu" class="w-7 h-7"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 absolute w-full shadow-xl z-50">
+            <div class="flex flex-col p-4 space-y-4 font-medium text-center">
+                <a href="#" onclick="app.router('home');toggleMobile()" class="py-2">Inicio</a>
+                <a href="#" onclick="app.router('store');toggleMobile()" class="py-2">Tienda</a>
+                <a href="#" onclick="app.router('services');toggleMobile()" class="py-2">Servicios</a>
+                <a href="#" onclick="app.router('lms');toggleMobile()" class="bg-brand-50 text-brand-600 py-2 rounded-lg font-bold">Aula Virtual</a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-view" class="flex-grow pt-20">
+        <div class="max-w-7xl mx-auto px-4 py-20 space-y-8">
+            <div class="h-96 bg-slate-200 rounded-3xl skeleton"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="h-64 bg-slate-200 rounded-2xl skeleton"></div>
+                <div class="h-64 bg-slate-200 rounded-2xl skeleton"></div>
+                <div class="h-64 bg-slate-200 rounded-2xl skeleton"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-slate-400 pt-20 pb-10 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-12 mb-16">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-2 text-white mb-6">
+                    <i data-lucide="zap" class="w-6 h-6 text-brand-500"></i>
+                    <span class="text-2xl font-bold">eContademy</span>
+                </div>
+                <p class="mb-6 max-w-sm leading-relaxed">Transformamos la educación digital. Aprende habilidades reales, obtén certificaciones y lleva tu carrera al siguiente nivel.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="bg-white/10 p-2 rounded-full hover:bg-brand-600 hover:text-white transition"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <a href="#" class="bg-white/10 p-2 rounded-full hover:bg-brand-600 hover:text-white transition"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6 text-lg">Legal</h4>
+                <ul class="space-y-4">
+                    <li><a href="#" class="hover:text-brand-500 transition">Términos y Condiciones</a></li>
+                    <li><a href="#" class="hover:text-brand-500 transition">Política de Privacidad</a></li>
+                    <li><a href="#" onclick="app.router('contact')" class="hover:text-brand-500 transition">Soporte</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6 text-lg">Newsletter</h4>
+                <form onsubmit="app.handlers.newsletter(event)" class="space-y-3">
+                    <input type="email" placeholder="Tu mejor email" required class="w-full bg-slate-800 border-none rounded-lg p-3 text-white focus:ring-2 focus:ring-brand-500">
+                    <button type="submit" class="w-full bg-brand-600 text-white font-bold py-2 rounded-lg hover:bg-brand-700">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 pt-8 border-t border-slate-800 text-center text-sm">
+            <p>&copy; 2025 eContademy. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <div id="cart-sidebar" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="app.toggleCart()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl transform transition-transform duration-300 translate-x-full flex flex-col" id="cart-panel">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="shopping-bag" class="text-brand-600"></i>
+                    <h2 class="text-xl font-bold text-slate-900">Tu Carrito</h2>
+                </div>
+                <button onclick="app.toggleCart()" class="text-slate-400 hover:text-red-500 transition"><i data-lucide="x"></i></button>
+            </div>
+            
+            <div id="cart-content" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+            
+            <div class="p-6 bg-slate-50 border-t border-slate-200 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between items-end">
+                        <span class="text-slate-500 font-medium">Subtotal</span>
+                        <span id="cart-subtotal" class="font-bold text-slate-900">$0.00</span>
+                    </div>
+                    <div id="discount-row" class="flex justify-between items-end text-green-600 hidden">
+                        <span class="font-medium text-sm">Descuento</span>
+                        <span id="cart-discount" class="font-bold text-sm">-$0.00</span>
+                    </div>
+                    <div class="flex justify-between items-end pt-2 border-t">
+                        <span class="text-slate-900 font-bold text-lg">Total</span>
+                        <span id="cart-total" class="font-bold text-2xl text-slate-900">$0.00</span>
+                    </div>
+                </div>
+                <button onclick="app.openCheckout()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-brand-600 transition shadow-lg flex justify-center items-center gap-2">
+                    Procesar Pago <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+                <p class="text-xs text-center text-slate-400 mt-3"><i data-lucide="shield-check" class="w-3 h-3 inline"></i> Pago 100% Seguro</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="checkout-modal" class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-dark/90 backdrop-blur-sm" onclick="document.getElementById('checkout-modal').classList.add('hidden')"></div>
+        <div class="bg-white rounded-2xl w-full max-w-lg relative z-10 overflow-hidden shadow-2xl animate-scale-up max-h-[90vh] overflow-y-auto">
+            <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-6 text-white text-center">
+                <h3 class="text-2xl font-bold">Finalizar Pedido</h3>
+                <p class="text-slate-300 text-sm mt-1">Completa tus datos para recibir acceso inmediato.</p>
+            </div>
+            <div class="p-8">
+                <form onsubmit="app.handlers.submitOrder(event)" class="space-y-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Nombre Completo</label>
+                            <input type="text" id="chk-name" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Correo Electrónico</label>
+                            <input type="email" id="chk-email" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Teléfono / WhatsApp</label>
+                            <input type="tel" id="chk-phone" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition">
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-lg border border-dashed border-slate-300">
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">¿Tienes un cupón?</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="chk-coupon-code" placeholder="CÓDIGO" class="flex-1 p-2 border rounded uppercase outline-none text-sm">
+                            <button type="button" onclick="app.handlers.checkCoupon()" class="bg-slate-200 px-4 rounded font-bold text-slate-600 text-sm hover:bg-slate-300">Aplicar</button>
+                        </div>
+                        <p id="coupon-msg" class="text-xs mt-2 font-bold hidden"></p>
+                    </div>
+
+                    <div class="flex items-start gap-2">
+                        <input type="checkbox" id="chk-news" checked class="mt-1 w-4 h-4 text-brand-600 rounded">
+                        <label for="chk-news" class="text-sm text-slate-600">Quiero recibir descuentos exclusivos y novedades.</label>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="w-full bg-brand-600 text-white py-3.5 rounded-xl font-bold hover:bg-brand-700 transition shadow-lg flex justify-center items-center gap-2">
+                            Confirmar y Pagar
+                        </button>
+                        <p class="text-xs text-center text-slate-400 mt-2">Te enviaremos las credenciales a tu correo.</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-8 right-8 bg-slate-800 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 transform translate-y-20 opacity-0 transition-all duration-500 z-[80]">
+        <div class="bg-green-500 rounded-full p-1"><i data-lucide="check" class="w-4 h-4 text-white"></i></div>
+        <div>
+            <h4 class="font-bold text-sm">Notificación</h4>
+            <p id="toast-msg" class="text-xs text-slate-300">Mensaje del sistema</p>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURACIÓN ---
+        // Pega aquí la URL de tu Script de Google desplegado (EXEC)
+        const API_URL = "https://script.google.com/macros/s/AKfycbzB-12cHXlPTgv0vaOzZJt4JN1BVLleKbhIqvX5MVIupTzNPEzYxzPMd5V5no2tps0ZGA/exec"; 
+        
+        const app = {
+            data: { products: [], blog: [], services: [], valoraciones: [] },
+            cart: JSON.parse(localStorage.getItem('ef_cart')) || [],
+            user: null,
+            activeCoupon: null,
+            sliderInterval: null,
+
+            // --- INICIO ---
+            init: async () => {
+                lucide.createIcons();
+                app.updateCartUI();
+                await app.fetchData();
+                app.router('home');
+            },
+
+            // --- DATA FETCHING (CON SKELETON HANDLING) ---
+            fetchData: async () => {
+                try {
+                    const res = await fetch(API_URL);
+                    const json = await res.json();
+                    if(json.error) throw new Error(json.error);
+                    app.data = json;
+                } catch(e) {
+                    console.warn("Error o Modo Offline:", e);
+                    // Datos Fallback para que la UI no se rompa si la API falla
+                    app.data.productos = [
+                        {id:'1', titulo:'Máster en Desarrollo Web', precio:99.99, categoria:'Curso', imagen:'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600', descripcion:'HTML, CSS, JS y React.'},
+                        {id:'2', titulo:'Finanzas para No Financieros', precio:29.99, categoria:'Curso', imagen:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600', descripcion:'Maneja tu dinero.'}
+                    ];
+                    app.data.blog = [
+                        {id:'b1', titulo:'Cómo estudiar online', autor:'eContademy', fecha:'2024', imagen:'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600', contenido:'Tips...'}
+                    ];
+                }
+            },
+
+            // --- NAVEGACIÓN Y SEO ---
+            router: (view) => {
+                const main = document.getElementById('main-view');
+                window.scrollTo(0,0);
+                if(app.sliderInterval) clearInterval(app.sliderInterval);
+                
+                // 1. HOME VIEW
+                if (view === 'home') {
+                    app.updateSEO('Inicio', 'Plataforma líder en cursos online.');
+                    main.innerHTML = `
+                        <div class="slider-wrapper">
+                            <div class="slide active">
+                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1920" class="absolute inset-0 w-full h-full object-cover">
+                                <div class="slide-overlay"></div>
+                                <div class="slide-content text-center text-white animate-slide-up">
+                                    <h3 class="text-brand-400 font-bold tracking-widest uppercase mb-4 text-sm md:text-base">Plataforma Educativa #1</h3>
+                                    <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">Impulsa tu Carrera <br>al <span class="text-brand-500">Siguiente Nivel</span></h1>
+                                    <p class="text-lg md:text-xl text-slate-300 mb-8 max-w-2xl mx-auto">Cursos prácticos, mentoría experta y herramientas reales.</p>
+                                    <div class="flex flex-col md:flex-row gap-4 justify-center">
+                                        <button onclick="app.router('store')" class="bg-brand-600 text-white px-8 py-4 rounded-full font-bold hover:bg-brand-700 transition shadow-lg">Explorar Cursos</button>
+                                        <button onclick="app.router('contact')" class="bg-white/10 backdrop-blur border border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-dark transition">Contáctanos</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slide">
+                                <img src="https://images.unsplash.com/photo-1531297425935-9ae8ac68f432?auto=format&fit=crop&w=1920" class="absolute inset-0 w-full h-full object-cover">
+                                <div class="slide-overlay"></div>
+                                <div class="slide-content text-left text-white max-w-4xl mx-auto pl-4">
+                                    <h3 class="text-yellow-400 font-bold uppercase mb-4">Nueva Temporada</h3>
+                                    <h1 class="text-5xl md:text-7xl font-extrabold mb-6">Aprende Haciendo</h1>
+                                    <p class="text-xl mb-8">Proyectos reales. Código real. Resultados reales.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border-b border-slate-100 py-10 relative z-20 -mt-2 rounded-t-3xl shadow-xl mx-2 md:mx-0">
+                            <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                                <div><h4 class="text-3xl font-extrabold text-slate-900">5k+</h4><p class="text-slate-500 text-sm">Estudiantes</p></div>
+                                <div><h4 class="text-3xl font-extrabold text-slate-900">120+</h4><p class="text-slate-500 text-sm">Cursos</p></div>
+                                <div><h4 class="text-3xl font-extrabold text-slate-900">4.9/5</h4><p class="text-slate-500 text-sm">Valoración</p></div>
+                                <div><h4 class="text-3xl font-extrabold text-slate-900">24/7</h4><p class="text-slate-500 text-sm">Soporte</p></div>
+                            </div>
+                        </div>
+
+                        <section class="py-20 bg-slate-50">
+                            <div class="max-w-7xl mx-auto px-4">
+                                <div class="text-center mb-16">
+                                    <span class="text-brand-600 font-bold uppercase text-sm tracking-wider">Oportunidades</span>
+                                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-2">Más Vendidos</h2>
+                                    <div class="w-20 h-1.5 bg-brand-500 mx-auto mt-6 rounded-full"></div>
+                                </div>
+                                <div class="grid md:grid-cols-3 gap-8">
+                                    ${app.data.productos.slice(0, 3).map(p => app.components.productCard(p)).join('')}
+                                </div>
+                                <div class="text-center mt-12">
+                                    <button onclick="app.router('store')" class="text-slate-600 font-bold hover:text-brand-600 flex items-center gap-2 mx-auto border-b-2 border-slate-200 pb-1 hover:border-brand-600 transition">Ver Catálogo Completo <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                                </div>
+                            </div>
+                        </section>
+                    `;
+                    app.initSlider();
+                }
+
+                // 2. STORE VIEW
+                else if (view === 'store') {
+                    app.updateSEO('Tienda', 'Catálogo completo de cursos.');
+                    main.innerHTML = `
+                        <div class="bg-slate-900 py-16 text-center text-white">
+                            <h1 class="text-4xl font-bold">Tienda Oficial</h1>
+                            <p class="text-slate-400 mt-2">Invierte en herramientas y conocimiento.</p>
+                        </div>
+                        <div class="max-w-7xl mx-auto px-4 py-16">
+                            <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-8">
+                                ${app.data.productos.map(p => app.components.productCard(p)).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 3. SERVICES VIEW
+                else if (view === 'services') {
+                    app.updateSEO('Servicios', 'Soluciones corporativas.');
+                    main.innerHTML = `
+                        <div class="max-w-7xl mx-auto px-4 py-20">
+                            <div class="text-center mb-16">
+                                <h2 class="text-4xl font-bold text-slate-900">Soluciones Corporativas</h2>
+                                <p class="text-xl text-slate-500 mt-4 max-w-2xl mx-auto">Transformación digital para tu empresa.</p>
+                            </div>
+                            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                ${app.data.servicios ? app.data.servicios.map(s => `
+                                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl transition group">
+                                        <div class="w-14 h-14 bg-brand-50 rounded-xl flex items-center justify-center text-brand-600 mb-6 group-hover:bg-brand-600 group-hover:text-white transition">
+                                            <i data-lucide="${s.icono || 'briefcase'}" class="w-7 h-7"></i>
+                                        </div>
+                                        <h3 class="text-2xl font-bold mb-3">${s.titulo}</h3>
+                                        <p class="text-slate-500 mb-6">${s.descripcion}</p>
+                                        <div class="mt-auto pt-6 border-t border-slate-100 flex justify-between items-center">
+                                            <span class="font-bold text-slate-900">${s.precio}</span>
+                                            <button onclick="app.router('contact')" class="text-brand-600 font-bold text-sm">Cotizar →</button>
+                                        </div>
+                                    </div>
+                                `).join('') : '<p class="col-span-3 text-center">Cargando servicios...</p>'}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 4. BLOG VIEW
+                else if (view === 'blog') {
+                    app.updateSEO('Blog', 'Noticias y tutoriales.');
+                    main.innerHTML = `
+                        <div class="max-w-5xl mx-auto px-4 py-16">
+                            <h2 class="text-4xl font-bold mb-10 border-l-4 border-brand-500 pl-4">Blog & Novedades</h2>
+                            <div class="space-y-12">
+                                ${app.data.blog.map(post => `
+                                    <article class="flex flex-col md:flex-row gap-8 items-start bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                                        <img src="${post.imagen}" class="w-full md:w-64 h-48 object-cover rounded-xl shadow-md">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                                                <span>${post.fecha}</span> • <span>${post.autor}</span>
+                                            </div>
+                                            <h3 class="text-2xl font-bold mb-3 text-slate-900">${post.titulo}</h3>
+                                            <p class="text-slate-600 leading-relaxed mb-4 line-clamp-3">${post.contenido}</p>
+                                            <button class="text-brand-600 font-bold text-sm">Leer Artículo Completo</button>
+                                        </div>
+                                    </article>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 5. CONTACT VIEW
+                else if (view === 'contact') {
+                    app.updateSEO('Contacto', 'Estamos para ayudarte.');
+                    main.innerHTML = `
+                        <div class="max-w-7xl mx-auto px-4 py-20">
+                            <div class="grid md:grid-cols-2 gap-16 bg-white rounded-3xl shadow-2xl overflow-hidden">
+                                <div class="bg-slate-900 p-12 text-white flex flex-col justify-between relative overflow-hidden">
+                                    <div class="relative z-10">
+                                        <h2 class="text-3xl font-bold mb-6">Hablemos</h2>
+                                        <p class="text-slate-400 mb-8">Estamos listos para responder tus dudas.</p>
+                                        <div class="space-y-6">
+                                            <div class="flex items-center gap-4"><i data-lucide="map-pin" class="text-brand-500"></i><p>Av. Innovación 123</p></div>
+                                            <div class="flex items-center gap-4"><i data-lucide="mail" class="text-brand-500"></i><p>hola@eContademy.com</p></div>
+                                            <div class="flex items-center gap-4"><i data-lucide="phone" class="text-brand-500"></i><p>+1 234 567 890</p></div>
+                                        </div>
+                                    </div>
+                                    <i data-lucide="globe" class="absolute -bottom-10 -right-10 w-64 h-64 text-slate-800 opacity-50"></i>
+                                </div>
+                                <div class="p-12">
+                                    <form onsubmit="app.handlers.submitContact(event)" class="space-y-6">
+                                        <div class="grid md:grid-cols-2 gap-6">
+                                            <div><label class="block font-bold text-sm mb-2">Nombre</label><input type="text" id="c-name" class="w-full bg-slate-50 border p-3 rounded-lg outline-none focus:border-brand-500"></div>
+                                            <div><label class="block font-bold text-sm mb-2">Email</label><input type="email" id="c-email" class="w-full bg-slate-50 border p-3 rounded-lg outline-none focus:border-brand-500"></div>
+                                        </div>
+                                        <div><label class="block font-bold text-sm mb-2">Asunto</label><input type="text" id="c-subject" class="w-full bg-slate-50 border p-3 rounded-lg outline-none focus:border-brand-500"></div>
+                                        <div><label class="block font-bold text-sm mb-2">Mensaje</label><textarea id="c-msg" rows="4" class="w-full bg-slate-50 border p-3 rounded-lg outline-none focus:border-brand-500"></textarea></div>
+                                        <button type="submit" class="w-full bg-brand-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-brand-700 transition">Enviar Mensaje</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 6. LMS VIEW
+                else if (view === 'lms') {
+                    app.updateSEO('Aula Virtual', 'Acceso estudiantes.');
+                    if (!app.user) {
+                        main.innerHTML = `
+                            <div class="min-h-[70vh] flex items-center justify-center px-4 bg-slate-50">
+                                <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-md text-center border border-slate-100">
+                                    <div class="w-20 h-20 bg-brand-50 rounded-full flex items-center justify-center mx-auto mb-6 text-brand-600"><i data-lucide="lock" class="w-10 h-10"></i></div>
+                                    <h2 class="text-3xl font-bold mb-2">Acceso Estudiantes</h2>
+                                    <p class="text-slate-500 mb-8">Usa tu ID de Pedido como contraseña.</p>
+                                    <form onsubmit="app.handlers.login(event)" class="space-y-4 text-left">
+                                        <div><label class="font-bold text-xs uppercase text-slate-400">Email</label><input type="email" id="lms-email" class="w-full border-b-2 border-slate-200 py-2 outline-none focus:border-brand-600 transition"></div>
+                                        <div><label class="font-bold text-xs uppercase text-slate-400">ID Pedido (Contraseña)</label><input type="password" id="lms-pass" class="w-full border-b-2 border-slate-200 py-2 outline-none focus:border-brand-600 transition"></div>
+                                        <button type="submit" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold mt-4 hover:bg-slate-800 transition">Ingresar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        main.innerHTML = `
+                            <div class="bg-slate-900 text-white py-8 px-4 sticky top-20 z-40"><div class="max-w-7xl mx-auto flex justify-between items-center"><div><h2 class="text-2xl font-bold">Hola, ${app.user.nombre}</h2><p class="text-slate-400">Bienvenido a tu espacio.</p></div><button onclick="app.user=null;app.router('lms')" class="text-red-400 font-bold text-sm border border-red-400/30 px-4 py-2 rounded-full hover:bg-red-400/10">Cerrar Sesión</button></div></div>
+                            <div class="max-w-7xl mx-auto px-4 py-12 space-y-12">
+                                ${app.user.cursos.length ? app.user.cursos.map(c => `
+                                    <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+                                        <div class="p-4 border-b bg-slate-50 flex items-center gap-3"><i data-lucide="play-circle" class="text-brand-600"></i><h3 class="font-bold text-lg">${c.titulo}</h3></div>
+                                        <div class="grid lg:grid-cols-3">
+                                            <div class="lg:col-span-2 bg-black p-4">${c.videoUrl ? `<div class="iframe-container"><iframe src="${c.videoUrl}" frameborder="0" allowfullscreen></iframe></div>` : '<div class="h-64 flex items-center justify-center text-slate-500">Video no disponible</div>'}</div>
+                                            <div class="p-8">
+                                                <h4 class="font-bold text-slate-900 mb-4">Recursos</h4>
+                                                <a href="${c.materialUrl || '#'}" target="_blank" class="flex items-center gap-3 p-4 border border-dashed border-slate-300 rounded-xl hover:border-brand-500 hover:bg-brand-50 transition group"><div class="bg-slate-100 p-2 rounded group-hover:bg-white"><i data-lucide="download" class="text-slate-600 group-hover:text-brand-600"></i></div><div><p class="font-bold text-sm">Descargar Material</p><p class="text-xs text-slate-400">PDFs, Ejercicios</p></div></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('') : '<div class="text-center py-20"><p class="text-xl text-slate-400">No tienes cursos activos.</p></div>'}
+                            </div>
+                        `;
+                    }
+                }
+                
+                lucide.createIcons();
+            },
+
+            // --- COMPONENTES VISUALES ---
+            components: {
+                productCard: (p) => `
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col hover:shadow-2xl hover:-translate-y-2 transition duration-300 group">
+                        <div class="h-56 relative overflow-hidden">
+                            <img src="${p.imagen}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">${p.categoria}</span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="font-bold text-lg text-slate-900 mb-2 leading-tight">${p.titulo}</h3>
+                            <p class="text-slate-500 text-sm mb-6 line-clamp-2 flex-1">${p.descripcion}</p>
+                            <div class="flex items-center justify-between mt-auto">
+                                <span class="text-2xl font-extrabold text-slate-900">$${p.precio}</span>
+                                <button onclick="app.addToCart('${p.id}')" class="bg-brand-600 text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-slate-900 transition shadow-lg shadow-brand-500/30">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // --- LÓGICA DE NEGOCIO ---
+            addToCart: (id) => {
+                const prod = app.data.productos.find(p => p.id === id);
+                const exist = app.cart.find(i => i.id === id);
+                exist ? exist.qty++ : app.cart.push({ ...prod, qty: 1 });
+                app.saveCart();
+                app.showToast(`Agregado: ${prod.titulo}`);
+            },
+            
+            removeFromCart: (id) => {
+                app.cart = app.cart.filter(i => i.id !== id);
+                app.saveCart();
+            },
+
+            saveCart: () => {
+                localStorage.setItem('ef_cart', JSON.stringify(app.cart));
+                app.updateCartUI();
+            },
+
+            updateCartUI: () => {
+                const badge = document.getElementById('cart-badge');
+                const totalQty = app.cart.reduce((a, b) => a + b.qty, 0);
+                badge.innerText = totalQty;
+                badge.classList.toggle('scale-0', totalQty === 0);
+                
+                const container = document.getElementById('cart-content');
+                if (!container) return;
+
+                if (app.cart.length === 0) {
+                    container.innerHTML = '<div class="flex flex-col items-center justify-center h-full text-slate-400"><i data-lucide="shopping-cart" class="w-12 h-12 mb-2 opacity-20"></i><p>Tu carrito está vacío</p></div>';
+                    document.getElementById('cart-total').innerText = "$0.00";
+                    document.getElementById('cart-subtotal').innerText = "$0.00";
+                } else {
+                    container.innerHTML = app.cart.map(i => `
+                        <div class="flex gap-4 bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
+                            <img src="${i.imagen}" class="w-16 h-16 rounded-lg object-cover">
+                            <div class="flex-1">
+                                <h4 class="font-bold text-sm text-slate-900 line-clamp-1">${i.titulo}</h4>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="text-xs text-slate-500 font-medium">$${i.precio} x ${i.qty}</span>
+                                    <button onclick="app.removeFromCart('${i.id}')" class="text-red-400 hover:text-red-600 bg-red-50 p-1 rounded"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    let subtotal = app.cart.reduce((a, b) => a + (b.precio * b.qty), 0);
+                    let total = subtotal;
+
+                    // Lógica Cupón
+                    const discountRow = document.getElementById('discount-row');
+                    if (app.activeCoupon) {
+                        discountRow.classList.remove('hidden');
+                        let discountVal = 0;
+                        if(app.activeCoupon.type === 'percent') discountVal = subtotal * (app.activeCoupon.value / 100);
+                        else discountVal = app.activeCoupon.value;
+                        
+                        document.getElementById('cart-discount').innerText = `-$${discountVal.toFixed(2)}`;
+                        total = subtotal - discountVal;
+                    } else {
+                        discountRow.classList.add('hidden');
+                    }
+
+                    document.getElementById('cart-subtotal').innerText = `$${subtotal.toFixed(2)}`;
+                    document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
+                }
+                lucide.createIcons();
+            },
+
+            // --- HANDLERS (Formularios y Acciones) ---
+            handlers: {
+                submitOrder: async (e) => {
+                    e.preventDefault();
+                    if(app.cart.length === 0) return alert("Carrito vacío");
+                    
+                    const btn = e.target.querySelector('button');
+                    const oldText = btn.innerHTML;
+                    btn.innerHTML = `<div class="loader mr-2"></div> Procesando...`; btn.disabled = true;
+                    
+                    const payload = {
+                        action: 'checkout',
+                        nombre: document.getElementById('chk-name').value,
+                        email: document.getElementById('chk-email').value,
+                        telefono: document.getElementById('chk-phone').value,
+                        newsletter: document.getElementById('chk-news').checked,
+                        cupon: app.activeCoupon ? app.activeCoupon.code : null,
+                        carrito: app.cart,
+                        total: document.getElementById('cart-total').innerText
+                    };
+
+                    try {
+                        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+                        const json = await res.json();
+                        
+                        if(json.status === 'success') {
+                            // EFECTO DE CELEBRACIÓN
+                            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                            
+                            app.cart = []; app.activeCoupon = null; app.saveCart();
+                            document.getElementById('checkout-modal').classList.add('hidden');
+                            alert(`¡PEDIDO EXITOSO!\n\nID Pedido: ${json.idPedido}\nGuarda este ID para entrar al Aula Virtual.`);
+                        } else {
+                            throw new Error("Error en backend");
+                        }
+                    } catch(err) {
+                        alert("Error de conexión. Inténtalo de nuevo.");
+                    }
+                    btn.innerHTML = oldText; btn.disabled = false;
+                },
+
+                checkCoupon: async () => {
+                    const code = document.getElementById('chk-coupon-code').value;
+                    const msg = document.getElementById('coupon-msg');
+                    if(!code) return;
+
+                    msg.innerText = "Validando..."; msg.classList.remove('hidden', 'text-green-600', 'text-red-500');
+                    
+                    try {
+                        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({action: 'check_coupon', codigo: code}) });
+                        const json = await res.json();
+                        
+                        if(json.status === 'success') {
+                            app.activeCoupon = json.cupon;
+                            msg.innerText = `¡Cupón ${json.cupon.code} aplicado!`;
+                            msg.classList.add('text-green-600');
+                            app.updateCartUI();
+                        } else {
+                            app.activeCoupon = null;
+                            msg.innerText = "Cupón inválido";
+                            msg.classList.add('text-red-500');
+                            app.updateCartUI();
+                        }
+                    } catch(e) { console.error(e); }
+                },
+
+                login: async (e) => {
+                    e.preventDefault();
+                    const btn = e.target.querySelector('button');
+                    btn.innerText = "Verificando...";
+                    
+                    const payload = {
+                        action: 'login',
+                        email: document.getElementById('lms-email').value,
+                        password: document.getElementById('lms-pass').value
+                    };
+
+                    try {
+                        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+                        const json = await res.json();
+                        if(json.status === 'success') { app.user = json; app.router('lms'); }
+                        else { alert("Credenciales incorrectas"); btn.innerText = "Ingresar"; }
+                    } catch(e) { alert("Error de conexión"); btn.innerText = "Ingresar"; }
+                },
+
+                submitContact: async (e) => {
+                    e.preventDefault();
+                    const btn = e.target.querySelector('button');
+                    const payload = {
+                        action: 'contact',
+                        nombre: document.getElementById('c-name').value,
+                        email: document.getElementById('c-email').value,
+                        asunto: document.getElementById('c-subject').value,
+                        mensaje: document.getElementById('c-msg').value
+                    };
+                    btn.innerText = "Enviando...";
+                    await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+                    app.showToast("Mensaje enviado");
+                    e.target.reset(); btn.innerText = "Enviar Mensaje";
+                },
+
+                newsletter: async (e) => {
+                    e.preventDefault();
+                    // Lógica simple de newsletter
+                    app.showToast("¡Gracias por suscribirte!");
+                    e.target.reset();
+                }
+            },
+
+            // --- UTILS ---
+            toggleCart: () => {
+                const sidebar = document.getElementById('cart-sidebar');
+                const panel = document.getElementById('cart-panel');
+                if (sidebar.classList.contains('hidden')) {
+                    sidebar.classList.remove('hidden');
+                    setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+                } else {
+                    panel.classList.add('translate-x-full');
+                    setTimeout(() => sidebar.classList.add('hidden'), 300);
+                }
+            },
+            openCheckout: () => { app.toggleCart(); document.getElementById('checkout-modal').classList.remove('hidden'); },
+            showToast: (msg) => { 
+                const t = document.getElementById('toast'); 
+                document.getElementById('toast-msg').innerText = msg; 
+                t.classList.remove('opacity-0', 'translate-y-20'); 
+                setTimeout(()=>t.classList.add('opacity-0', 'translate-y-20'), 3000); 
+            },
+            updateSEO: (title, desc) => {
+                document.title = `${title} | eContademy`;
+                document.querySelector('meta[name="description"]').setAttribute("content", desc);
+            },
+            initSlider: () => {
+                let slideIndex = 0;
+                app.sliderInterval = setInterval(() => {
+                    const slides = document.querySelectorAll('.slide');
+                    if(slides.length > 0) {
+                        slides.forEach(s => s.classList.remove('active'));
+                        slideIndex = (slideIndex + 1) % slides.length;
+                        slides[slideIndex].classList.add('active');
+                    }
+                }, 6000);
+            }
+        };
+
+        // INICIAR APP
+        document.addEventListener('DOMContentLoaded', app.init);
+        function toggleMobile(){ document.getElementById('mobile-menu').classList.toggle('hidden'); }
+    </script>
+</body>
+</html>
