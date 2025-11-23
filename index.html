@@ -5,15 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eContademy | Transforma tu Futuro</title>
     
-    <meta name="description" content="Plataforma líder en educación online y recursos para emprendedores. Cursos certificados, herramientas y consultoría.">
-    <meta name="keywords" content="cursos online, contabilidad, programación, excel, negocios, consultoría">
-    <meta name="author" content="eContademy">
-    
-    <meta property="og:type" content="website">
+    <meta name="description" content="Plataforma líder en educación online. Aprende habilidades reales con proyectos prácticos.">
     <meta property="og:title" content="eContademy | Educación Real">
-    <meta property="og:description" content="Aprende habilidades reales con proyectos prácticos.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200">
-
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -30,7 +25,7 @@
                         surface: '#f8fafc'
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.6s ease-out forwards',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
                         'slide-up': 'slideUp 0.8s ease-out forwards',
                         'scale-up': 'scaleUp 0.3s ease-out forwards'
                     },
@@ -45,24 +40,24 @@
     </script>
 
     <style>
-        /* ESTILOS CRÍTICOS & GLASSMORPHISM */
+        /* ESTILOS PERSONALIZADOS */
         .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.3); }
         
-        /* Slider */
+        /* Slider Hero */
         .slider-wrapper { position: relative; height: 85vh; min-height: 600px; overflow: hidden; background: #000; }
         .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease-in-out; display: flex; align-items: center; justify-content: center; }
         .slide.active { opacity: 1; z-index: 10; }
         .slide-overlay { background: linear-gradient(to top, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.3)); position: absolute; inset: 0; z-index: 2; }
         .slide-content { position: relative; z-index: 10; padding: 2rem; max-width: 1200px; width: 100%; }
 
-        /* Loader & Skeleton */
+        /* Loader & Skeleton Loading */
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid #3b82f6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .skeleton { background: linear-gradient(90deg, #e2e8f0 25%, #cbd5e1 50%, #e2e8f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
         @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         
         /* Video Container */
-        .iframe-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000; }
+        .iframe-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
     </style>
 </head>
@@ -83,10 +78,9 @@
 
                 <nav class="hidden lg:flex items-center gap-8 font-medium text-slate-600">
                     <a href="#" onclick="app.router('home')" class="hover:text-brand-600 transition py-2 nav-link">Inicio</a>
-                    <a href="#" onclick="app.router('store')" class="hover:text-brand-600 transition py-2 nav-link">Cursos & Tienda</a>
+                    <a href="#" onclick="app.router('store')" class="hover:text-brand-600 transition py-2 nav-link">Cursos</a>
                     <a href="#" onclick="app.router('services')" class="hover:text-brand-600 transition py-2 nav-link">Servicios</a>
                     <a href="#" onclick="app.router('blog')" class="hover:text-brand-600 transition py-2 nav-link">Blog</a>
-                    <a href="#" onclick="app.router('contact')" class="hover:text-brand-600 transition py-2 nav-link">Contacto</a>
                 </nav>
 
                 <div class="flex items-center gap-4">
@@ -110,7 +104,6 @@
             <div class="flex flex-col p-4 space-y-4 font-medium text-center">
                 <a href="#" onclick="app.router('home');toggleMobile()" class="py-2">Inicio</a>
                 <a href="#" onclick="app.router('store');toggleMobile()" class="py-2">Tienda</a>
-                <a href="#" onclick="app.router('services');toggleMobile()" class="py-2">Servicios</a>
                 <a href="#" onclick="app.router('lms');toggleMobile()" class="bg-brand-50 text-brand-600 py-2 rounded-lg font-bold">Aula Virtual</a>
             </div>
         </div>
@@ -134,24 +127,24 @@
                     <i data-lucide="zap" class="w-6 h-6 text-brand-500"></i>
                     <span class="text-2xl font-bold">eContademy</span>
                 </div>
-                <p class="mb-6 max-w-sm leading-relaxed">Transformamos la educación digital. Aprende habilidades reales, obtén certificaciones y lleva tu carrera al siguiente nivel.</p>
+                <p class="mb-6 max-w-sm leading-relaxed">Educación digital para el mundo real. Sin teoría aburrida, solo habilidades prácticas.</p>
                 <div class="flex gap-4">
                     <a href="#" class="bg-white/10 p-2 rounded-full hover:bg-brand-600 hover:text-white transition"><i data-lucide="instagram" class="w-5 h-5"></i></a>
                     <a href="#" class="bg-white/10 p-2 rounded-full hover:bg-brand-600 hover:text-white transition"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
                 </div>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-6 text-lg">Legal</h4>
+                <h4 class="text-white font-bold mb-6 text-lg">Plataforma</h4>
                 <ul class="space-y-4">
-                    <li><a href="#" class="hover:text-brand-500 transition">Términos y Condiciones</a></li>
-                    <li><a href="#" class="hover:text-brand-500 transition">Política de Privacidad</a></li>
-                    <li><a href="#" onclick="app.router('contact')" class="hover:text-brand-500 transition">Soporte</a></li>
+                    <li><a href="#" onclick="app.router('store')" class="hover:text-brand-500 transition">Todos los Cursos</a></li>
+                    <li><a href="#" onclick="app.router('services')" class="hover:text-brand-500 transition">Empresas</a></li>
+                    <li><a href="#" onclick="app.router('contact')" class="hover:text-brand-500 transition">Ayuda / Soporte</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="text-white font-bold mb-6 text-lg">Newsletter</h4>
                 <form onsubmit="app.handlers.newsletter(event)" class="space-y-3">
-                    <input type="email" placeholder="Tu mejor email" required class="w-full bg-slate-800 border-none rounded-lg p-3 text-white focus:ring-2 focus:ring-brand-500">
+                    <input type="email" placeholder="Tu email" required class="w-full bg-slate-800 border-none rounded-lg p-3 text-white focus:ring-2 focus:ring-brand-500">
                     <button type="submit" class="w-full bg-brand-600 text-white font-bold py-2 rounded-lg hover:bg-brand-700">Suscribirse</button>
                 </form>
             </div>
@@ -202,7 +195,7 @@
         <div class="bg-white rounded-2xl w-full max-w-lg relative z-10 overflow-hidden shadow-2xl animate-scale-up max-h-[90vh] overflow-y-auto">
             <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-6 text-white text-center">
                 <h3 class="text-2xl font-bold">Finalizar Pedido</h3>
-                <p class="text-slate-300 text-sm mt-1">Completa tus datos para recibir acceso inmediato.</p>
+                <p class="text-slate-300 text-sm mt-1">Ingresa tus datos para recibir el acceso.</p>
             </div>
             <div class="p-8">
                 <form onsubmit="app.handlers.submitOrder(event)" class="space-y-5">
@@ -212,11 +205,11 @@
                             <input type="text" id="chk-name" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-1">Correo Electrónico</label>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Email</label>
                             <input type="email" id="chk-email" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-1">Teléfono / WhatsApp</label>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Teléfono</label>
                             <input type="tel" id="chk-phone" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition">
                         </div>
                     </div>
@@ -232,7 +225,7 @@
 
                     <div class="flex items-start gap-2">
                         <input type="checkbox" id="chk-news" checked class="mt-1 w-4 h-4 text-brand-600 rounded">
-                        <label for="chk-news" class="text-sm text-slate-600">Quiero recibir descuentos exclusivos y novedades.</label>
+                        <label for="chk-news" class="text-sm text-slate-600">Quiero recibir descuentos y novedades por correo.</label>
                     </div>
 
                     <div class="pt-2">
@@ -255,12 +248,11 @@
     </div>
 
     <script>
-        // --- CONFIGURACIÓN ---
-        // Pega aquí la URL de tu Script de Google desplegado (EXEC)
-        const API_URL = "https://script.google.com/macros/s/AKfycbzB-12cHXlPTgv0vaOzZJt4JN1BVLleKbhIqvX5MVIupTzNPEzYxzPMd5V5no2tps0ZGA/exec"; 
+        // CONFIGURACIÓN: REEMPLAZA ESTO CON LA URL DE TU SCRIPT DE GOOGLE
+        const API_URL = "https://script.google.com/macros/s/AKfycb.../exec"; 
         
         const app = {
-            data: { products: [], blog: [], services: [], valoraciones: [] },
+            data: { productos: [], blog: [], servicios: [], valoraciones: [] },
             cart: JSON.parse(localStorage.getItem('ef_cart')) || [],
             user: null,
             activeCoupon: null,
@@ -282,19 +274,15 @@
                     if(json.error) throw new Error(json.error);
                     app.data = json;
                 } catch(e) {
-                    console.warn("Error o Modo Offline:", e);
-                    // Datos Fallback para que la UI no se rompa si la API falla
+                    console.warn("Modo Offline / Error API:", e);
+                    // Fallback para que no se rompa la UI
                     app.data.productos = [
-                        {id:'1', titulo:'Máster en Desarrollo Web', precio:99.99, categoria:'Curso', imagen:'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600', descripcion:'HTML, CSS, JS y React.'},
-                        {id:'2', titulo:'Finanzas para No Financieros', precio:29.99, categoria:'Curso', imagen:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600', descripcion:'Maneja tu dinero.'}
-                    ];
-                    app.data.blog = [
-                        {id:'b1', titulo:'Cómo estudiar online', autor:'eContademy', fecha:'2024', imagen:'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600', contenido:'Tips...'}
+                        {id:'1', titulo:'Curso Python (Demo)', precio:49.99, categoria:'Curso', imagen:'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=600', descripcion:'Aprende Python.'}
                     ];
                 }
             },
 
-            // --- NAVEGACIÓN Y SEO ---
+            // --- NAVEGACIÓN (ROUTER) ---
             router: (view) => {
                 const main = document.getElementById('main-view');
                 window.scrollTo(0,0);
@@ -302,7 +290,6 @@
                 
                 // 1. HOME VIEW
                 if (view === 'home') {
-                    app.updateSEO('Inicio', 'Plataforma líder en cursos online.');
                     main.innerHTML = `
                         <div class="slider-wrapper">
                             <div class="slide active">
@@ -311,7 +298,7 @@
                                 <div class="slide-content text-center text-white animate-slide-up">
                                     <h3 class="text-brand-400 font-bold tracking-widest uppercase mb-4 text-sm md:text-base">Plataforma Educativa #1</h3>
                                     <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">Impulsa tu Carrera <br>al <span class="text-brand-500">Siguiente Nivel</span></h1>
-                                    <p class="text-lg md:text-xl text-slate-300 mb-8 max-w-2xl mx-auto">Cursos prácticos, mentoría experta y herramientas reales.</p>
+                                    <p class="text-lg md:text-xl text-slate-300 mb-8 max-w-2xl mx-auto">Cursos prácticos, mentoría experta y herramientas que realmente necesitas.</p>
                                     <div class="flex flex-col md:flex-row gap-4 justify-center">
                                         <button onclick="app.router('store')" class="bg-brand-600 text-white px-8 py-4 rounded-full font-bold hover:bg-brand-700 transition shadow-lg">Explorar Cursos</button>
                                         <button onclick="app.router('contact')" class="bg-white/10 backdrop-blur border border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-dark transition">Contáctanos</button>
@@ -331,9 +318,9 @@
 
                         <div class="bg-white border-b border-slate-100 py-10 relative z-20 -mt-2 rounded-t-3xl shadow-xl mx-2 md:mx-0">
                             <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                                <div><h4 class="text-3xl font-extrabold text-slate-900">5k+</h4><p class="text-slate-500 text-sm">Estudiantes</p></div>
+                                <div><h4 class="text-3xl font-extrabold text-slate-900">5k+</h4><p class="text-slate-500 text-sm">Alumnos</p></div>
                                 <div><h4 class="text-3xl font-extrabold text-slate-900">120+</h4><p class="text-slate-500 text-sm">Cursos</p></div>
-                                <div><h4 class="text-3xl font-extrabold text-slate-900">4.9/5</h4><p class="text-slate-500 text-sm">Valoración</p></div>
+                                <div><h4 class="text-3xl font-extrabold text-slate-900">4.9</h4><p class="text-slate-500 text-sm">Estrellas</p></div>
                                 <div><h4 class="text-3xl font-extrabold text-slate-900">24/7</h4><p class="text-slate-500 text-sm">Soporte</p></div>
                             </div>
                         </div>
@@ -359,11 +346,10 @@
 
                 // 2. STORE VIEW
                 else if (view === 'store') {
-                    app.updateSEO('Tienda', 'Catálogo completo de cursos.');
                     main.innerHTML = `
                         <div class="bg-slate-900 py-16 text-center text-white">
-                            <h1 class="text-4xl font-bold">Tienda Oficial</h1>
-                            <p class="text-slate-400 mt-2">Invierte en herramientas y conocimiento.</p>
+                            <h1 class="text-4xl font-bold">Catálogo Completo</h1>
+                            <p class="text-slate-400 mt-2">Invierte en tu futuro hoy.</p>
                         </div>
                         <div class="max-w-7xl mx-auto px-4 py-16">
                             <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -375,7 +361,6 @@
 
                 // 3. SERVICES VIEW
                 else if (view === 'services') {
-                    app.updateSEO('Servicios', 'Soluciones corporativas.');
                     main.innerHTML = `
                         <div class="max-w-7xl mx-auto px-4 py-20">
                             <div class="text-center mb-16">
@@ -403,7 +388,6 @@
 
                 // 4. BLOG VIEW
                 else if (view === 'blog') {
-                    app.updateSEO('Blog', 'Noticias y tutoriales.');
                     main.innerHTML = `
                         <div class="max-w-5xl mx-auto px-4 py-16">
                             <h2 class="text-4xl font-bold mb-10 border-l-4 border-brand-500 pl-4">Blog & Novedades</h2>
@@ -428,7 +412,6 @@
 
                 // 5. CONTACT VIEW
                 else if (view === 'contact') {
-                    app.updateSEO('Contacto', 'Estamos para ayudarte.');
                     main.innerHTML = `
                         <div class="max-w-7xl mx-auto px-4 py-20">
                             <div class="grid md:grid-cols-2 gap-16 bg-white rounded-3xl shadow-2xl overflow-hidden">
@@ -460,16 +443,15 @@
                     `;
                 }
 
-                // 6. LMS VIEW
+                // 6. LMS VIEW (AULA VIRTUAL)
                 else if (view === 'lms') {
-                    app.updateSEO('Aula Virtual', 'Acceso estudiantes.');
                     if (!app.user) {
                         main.innerHTML = `
                             <div class="min-h-[70vh] flex items-center justify-center px-4 bg-slate-50">
                                 <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-md text-center border border-slate-100">
                                     <div class="w-20 h-20 bg-brand-50 rounded-full flex items-center justify-center mx-auto mb-6 text-brand-600"><i data-lucide="lock" class="w-10 h-10"></i></div>
                                     <h2 class="text-3xl font-bold mb-2">Acceso Estudiantes</h2>
-                                    <p class="text-slate-500 mb-8">Usa tu ID de Pedido como contraseña.</p>
+                                    <p class="text-slate-500 mb-8">Tu ID de Pedido es tu contraseña.</p>
                                     <form onsubmit="app.handlers.login(event)" class="space-y-4 text-left">
                                         <div><label class="font-bold text-xs uppercase text-slate-400">Email</label><input type="email" id="lms-email" class="w-full border-b-2 border-slate-200 py-2 outline-none focus:border-brand-600 transition"></div>
                                         <div><label class="font-bold text-xs uppercase text-slate-400">ID Pedido (Contraseña)</label><input type="password" id="lms-pass" class="w-full border-b-2 border-slate-200 py-2 outline-none focus:border-brand-600 transition"></div>
@@ -502,7 +484,7 @@
                 lucide.createIcons();
             },
 
-            // --- COMPONENTES VISUALES ---
+            // --- COMPONENTES ---
             components: {
                 productCard: (p) => `
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col hover:shadow-2xl hover:-translate-y-2 transition duration-300 group">
@@ -524,7 +506,7 @@
                 `
             },
 
-            // --- LÓGICA DE NEGOCIO ---
+            // --- CARRITO & NEGOCIO ---
             addToCart: (id) => {
                 const prod = app.data.productos.find(p => p.id === id);
                 const exist = app.cart.find(i => i.id === id);
@@ -556,6 +538,7 @@
                     container.innerHTML = '<div class="flex flex-col items-center justify-center h-full text-slate-400"><i data-lucide="shopping-cart" class="w-12 h-12 mb-2 opacity-20"></i><p>Tu carrito está vacío</p></div>';
                     document.getElementById('cart-total').innerText = "$0.00";
                     document.getElementById('cart-subtotal').innerText = "$0.00";
+                    document.getElementById('discount-row').classList.add('hidden');
                 } else {
                     container.innerHTML = app.cart.map(i => `
                         <div class="flex gap-4 bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
@@ -573,7 +556,6 @@
                     let subtotal = app.cart.reduce((a, b) => a + (b.precio * b.qty), 0);
                     let total = subtotal;
 
-                    // Lógica Cupón
                     const discountRow = document.getElementById('discount-row');
                     if (app.activeCoupon) {
                         discountRow.classList.remove('hidden');
@@ -593,8 +575,9 @@
                 lucide.createIcons();
             },
 
-            // --- HANDLERS (Formularios y Acciones) ---
+            // --- HANDLERS ---
             handlers: {
+                // ---> AQUÍ ESTÁ LA CORRECCIÓN CLAVE: e.target.reset() <---
                 submitOrder: async (e) => {
                     e.preventDefault();
                     if(app.cart.length === 0) return alert("Carrito vacío");
@@ -618,32 +601,20 @@
                         const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
                         const json = await res.json();
                         
-if(json.status === 'success') {
-    // 1. EFECTO DE CELEBRACIÓN
-    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-    
-    // 2. LIMPIEZA DE DATOS (ESTO ES LO NUEVO)
-    e.target.reset(); // <--- ESTO BORRA LOS CAMPOS DEL FORMULARIO (Nombre, Email, etc.)
-    app.cart = []; 
-    app.activeCoupon = null; 
-    app.saveCart();
-    
-    // 3. LIMPIEZA VISUAL DEL CARRITO
-    document.getElementById('cart-subtotal').innerText = "$0.00";
-    document.getElementById('cart-total').innerText = "$0.00";
-    document.getElementById('cart-badge').classList.add('scale-0'); // Ocultar contador rojo
-    document.getElementById('discount-row').classList.add('hidden'); // Ocultar descuento
-    
-    // 4. CERRAR MODAL Y AVISAR
-    document.getElementById('checkout-modal').classList.add('hidden');
-    
-    // Mensaje con el ID para el usuario
-    alert(`¡PEDIDO EXITOSO!\n\nID Pedido: ${json.idPedido}\n\nIMPORTANTE: Copia este ID, es tu contraseña para entrar al Aula Virtual.`);
-}
+                        if(json.status === 'success') {
+                            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                            
+                            // LIMPIEZA DE FORMULARIO
+                            e.target.reset(); // <--- IMPORTANTE
+                            
+                            app.cart = []; app.activeCoupon = null; app.saveCart();
+                            document.getElementById('checkout-modal').classList.add('hidden');
+                            alert(`¡PEDIDO EXITOSO!\n\nID Pedido: ${json.idPedido}\n\nRevisa tu correo: ${payload.email}`);
                         } else {
                             throw new Error("Error en backend");
                         }
                     } catch(err) {
+                        console.error(err);
                         alert("Error de conexión. Inténtalo de nuevo.");
                     }
                     btn.innerHTML = oldText; btn.disabled = false;
@@ -711,9 +682,10 @@ if(json.status === 'success') {
 
                 newsletter: async (e) => {
                     e.preventDefault();
-                    // Lógica simple de newsletter
+                    const input = e.target.querySelector('input');
+                    // Idealmente enviar al backend también
                     app.showToast("¡Gracias por suscribirte!");
-                    e.target.reset();
+                    input.value = "";
                 }
             },
 
@@ -736,10 +708,6 @@ if(json.status === 'success') {
                 t.classList.remove('opacity-0', 'translate-y-20'); 
                 setTimeout(()=>t.classList.add('opacity-0', 'translate-y-20'), 3000); 
             },
-            updateSEO: (title, desc) => {
-                document.title = `${title} | eContademy`;
-                document.querySelector('meta[name="description"]').setAttribute("content", desc);
-            },
             initSlider: () => {
                 let slideIndex = 0;
                 app.sliderInterval = setInterval(() => {
@@ -758,7 +726,6 @@ if(json.status === 'success') {
         function toggleMobile(){ document.getElementById('mobile-menu').classList.toggle('hidden'); }
     </script>
 </body>
-
 </html>
 
 
